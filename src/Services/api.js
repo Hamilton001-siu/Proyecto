@@ -213,4 +213,54 @@ export const getResumenSemanalById = async (id) => {
       throw error;
     }
   };
+
+// Funciones para manejar Actividades Físicas
+export const getActividadesFisicas = async (usuarioId) => {
+  try {
+    const response = await axios.get(`${API_URL}/actividades-fisicas/usuario/${usuarioId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching actividades físicas:', error);
+    throw error;
+  }
+};
+
+export const createActividadFisica = async (actividadFisica) => {
+  try {
+    const response = await axios.post(`${API_URL}/actividades-fisicas`, actividadFisica);
+    return response.data;
+  } catch (error) {
+    console.error('Error creating actividad física:', error);
+    throw error;
+  }
+};
+
+export const updateActividadFisica = async (id, actividadFisica) => {
+  try {
+    const response = await axios.put(`${API_URL}/actividades-fisicas/${id}`, actividadFisica);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating actividad física:', error);
+    throw error;
+  }
+};
+
+export const partialUpdateActividadFisica = async (id, actividadFisica) => {
+  try {
+    const response = await axios.patch(`${API_URL}/actividades-fisicas/${id}`, actividadFisica);
+    return response.data;
+  } catch (error) {
+    console.error('Error partially updating actividad física:', error);
+    throw error;
+  }
+};
+
+export const deleteActividadFisica = async (id) => {
+  try {
+    await axios.delete(`${API_URL}/actividades-fisicas/${id}`);
+  } catch (error) {
+    console.error('Error deleting actividad física:', error);
+    throw error;
+  }
+};
   

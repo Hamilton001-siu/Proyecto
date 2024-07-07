@@ -3,7 +3,7 @@ import { getComidas, createComida, updateComida, partialUpdateComida, deleteComi
 
 const Comidas = ({ usuarioId }) => {
   const [comidas, setComidas] = useState([]);
-  const [nuevaComida, setNuevaComida] = useState({ nombre: '', tipo: '', proteinas: 0, carbohidratos: 0, calorias: 0, fecha: '' });
+  const [nuevaComida, setNuevaComida] = useState({ nombre: '', tipo: '', proteinas: '', carbohidratos: '', calorias: '', fecha: '' });
 
   useEffect(() => {
     const fetchComidas = async () => {

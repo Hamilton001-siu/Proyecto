@@ -15,6 +15,7 @@ import Consejos from './Consejos';
 import Recetas from './Receta';
 import Recordatorios from './Recordatorio';
 import ResumenesSemanales from './ResumenesSemanales';
+import ActividadFisica from './ActividadFisica';
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
         <Route path="/recetas" element={<Recetas usuarioId={usuarioId} />} />
         <Route path="/recordatorios" element={<Recordatorios usuarioId={usuarioId} />} />
         <Route path="/resumenes-semanales" element={<ResumenesSemanales usuarioId={usuarioId} />} />
+        <Route path="/actividades-fisicas" element={<ActividadFisica usuarioId={usuarioId} />} />
       </Routes>
     </Router>
   );

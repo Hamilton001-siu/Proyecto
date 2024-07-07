@@ -8,9 +8,9 @@ const Recetas = ({ usuarioId }) => {
     descripcion: '',
     ingredientes: '',
     instrucciones: '',
-    calorias: 0,
-    proteinas: 0,
-    carbohidratos: 0
+    calorias: '',
+    proteinas: '',
+    carbohidratos: ''
   });
 
   useEffect(() => {

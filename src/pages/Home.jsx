@@ -15,7 +15,7 @@ const Home = () => {
         </div>
         <div className="home-menu">
           <Link to="/comidas" className="home-button">Agregar Comida</Link>
-          <Link to="/ejercicios" className="home-button">Ejercicios Realizados</Link>
+          <Link to="/actividades-fisicas" className="home-button">Ejercicios Realizados</Link>
           <Link to="/resumenes-semanales" className="home-button">Ver Resumen Semanal</Link>
           <Link to="/recetas" className="home-button">Tus Recetas</Link>
           <Link to="/consejos" className="home-button">Consejo Diario</Link>
