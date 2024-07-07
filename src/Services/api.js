@@ -107,8 +107,14 @@ export const getAllConsejos = async () => {
 
 // Recetas
 export const getRecetas = async (usuarioId) => {
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+    }
+  };
+
   try {
-    const response = await axios.get(`${API_URL}/recetas/usuario/${usuarioId}`);
+    const response = await axios.get(`${API_URL}/recetas/usuario/${usuarioId}`, config);
     return response.data;
   } catch (error) {
     console.error('Error fetching recetas:', error);
@@ -117,8 +123,15 @@ export const getRecetas = async (usuarioId) => {
 };
 
 export const createReceta = async (receta) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+    }
+  };
+
   try {
-    const response = await axios.post(`${API_URL}/recetas`, receta);
+    const response = await axios.post(`${API_URL}/recetas`, receta, config);
     return response.data;
   } catch (error) {
     console.error('Error creating receta:', error);
@@ -126,19 +139,15 @@ export const createReceta = async (receta) => {
   }
 };
 
-export const updateReceta = async (id, receta) => {
-  try {
-    const response = await axios.put(`${API_URL}/recetas/${id}`, receta);
-    return response.data;
-  } catch (error) {
-    console.error('Error updating receta:', error);
-    throw error;
-  }
-};
-
 export const partialUpdateReceta = async (id, receta) => {
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+    }
+  };
+
   try {
-    const response = await axios.patch(`${API_URL}/recetas/${id}`, receta);
+    const response = await axios.patch(`${API_URL}/recetas/${id}`, receta, config);
     return response.data;
   } catch (error) {
     console.error('Error partially updating receta:', error);
@@ -147,13 +156,20 @@ export const partialUpdateReceta = async (id, receta) => {
 };
 
 export const deleteReceta = async (id) => {
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+    }
+  };
+
   try {
-    await axios.delete(`${API_URL}/recetas/${id}`);
+    await axios.delete(`${API_URL}/recetas/${id}`, config);
   } catch (error) {
     console.error('Error deleting receta:', error);
     throw error;
   }
 };
+
 
 // Recordatorios
 export const getRecordatorios = async (usuarioId) => {

@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { getRecetas, createReceta, updateReceta, partialUpdateReceta, deleteReceta } from '../Services/api';
+import React, { useState } from 'react';
+import { createReceta } from '../Services/api';
+import recetaImage from '../assets/receta.png';
+import { useNavigate } from 'react-router-dom';
+import './Receta.css';
 
-const Recetas = ({ usuarioId }) => {
-  const [recetas, setRecetas] = useState([]);
+const Receta = () => {
   const [nuevaReceta, setNuevaReceta] = useState({
     nombre: '',
     descripcion: '',
@@ -12,145 +14,71 @@ const Recetas = ({ usuarioId }) => {
     proteinas: '',
     carbohidratos: ''
   });
-
-  useEffect(() => {
-    const fetchRecetas = async () => {
-      try {
-        const data = await getRecetas(usuarioId);
-        setRecetas(data);
-      } catch (error) {
-        console.error('Error fetching recetas:', error);
-      }
-    };
-
-    fetchRecetas();
-  }, [usuarioId]);
+  const [usuarioId] = useState(localStorage.getItem('usuarioId'));
+  const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setNuevaReceta((prevState) => ({
+    const isNumberField = ['calorias', 'proteinas', 'carbohidratos'].includes(name);
+    setNuevaReceta(prevState => ({
       ...prevState,
-      [name]: value,
+      [name]: isNumberField ? parseFloat(value) : value
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      const createdReceta = await createReceta(nuevaReceta);
-      setRecetas((prevState) => [...prevState, createdReceta]);
+      await createReceta({ ...nuevaReceta, usuarioId });
       setNuevaReceta({
         nombre: '',
         descripcion: '',
         ingredientes: '',
         instrucciones: '',
-        calorias: 0,
-        proteinas: 0,
-        carbohidratos: 0
+        calorias: '',
+        proteinas: '',
+        carbohidratos: ''
       });
+      setError('');
+      setSuccessMessage('¡Receta creada exitosamente!');
+      setTimeout(() => {
+        setSuccessMessage('');
+      }, 3000);
     } catch (error) {
       console.error('Error creating receta:', error);
-    }
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      await deleteReceta(id);
-      setRecetas((prevState) => prevState.filter((receta) => receta.id !== id));
-    } catch (error) {
-      console.error('Error deleting receta:', error);
-    }
-  };
-
-  const handleUpdate = async (id) => {
-    try {
-      const updatedReceta = await updateReceta(id, nuevaReceta);
-      setRecetas((prevState) => prevState.map((receta) => (receta.id === id ? updatedReceta : receta)));
-      setNuevaReceta({
-        nombre: '',
-        descripcion: '',
-        ingredientes: '',
-        instrucciones: '',
-        calorias: 0,
-        proteinas: 0,
-        carbohidratos: 0
-      });
-    } catch (error) {
-      console.error('Error updating receta:', error);
+      setError('Error al crear receta. Por favor intente de nuevo.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div>
-      <h1>Recetas</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="nombre"
-          placeholder="Nombre"
-          value={nuevaReceta.nombre}
-          onChange={handleInputChange}
-        />
-        <input
-          type="text"
-          name="descripcion"
-          placeholder="Descripción"
-          value={nuevaReceta.descripcion}
-          onChange={handleInputChange}
-        />
-        <textarea
-          name="ingredientes"
-          placeholder="Ingredientes"
-          value={nuevaReceta.ingredientes}
-          onChange={handleInputChange}
-        />
-        <textarea
-          name="instrucciones"
-          placeholder="Instrucciones"
-          value={nuevaReceta.instrucciones}
-          onChange={handleInputChange}
-        />
-        <input
-          type="number"
-          name="calorias"
-          placeholder="Calorías"
-          value={nuevaReceta.calorias}
-          onChange={handleInputChange}
-        />
-        <input
-          type="number"
-          name="proteinas"
-          placeholder="Proteínas"
-          value={nuevaReceta.proteinas}
-          onChange={handleInputChange}
-        />
-        <input
-          type="number"
-          name="carbohidratos"
-          placeholder="Carbohidratos"
-          value={nuevaReceta.carbohidratos}
-          onChange={handleInputChange}
-        />
-        <button type="submit">Agregar Receta</button>
-      </form>
-
-      <ul>
-        {recetas.map((receta) => (
-          <li key={receta.id}>
-            <h3>{receta.nombre}</h3>
-            <p>{receta.descripcion}</p>
-            <p>Ingredientes: {receta.ingredientes}</p>
-            <p>Instrucciones: {receta.instrucciones}</p>
-            <p>Calorías: {receta.calorias}</p>
-            <p>Proteínas: {receta.proteinas}</p>
-            <p>Carbohidratos: {receta.carbohidratos}</p>
-            <button onClick={() => handleDelete(receta.id)}>Eliminar</button>
-            <button onClick={() => handleUpdate(receta.id)}>Actualizar</button>
-          </li>
-        ))}
-      </ul>
+    <div className="container">
+      <div className="left-side">
+        <img src={recetaImage} alt="Receta" className="receta-img" />
+        <button className="btn ver-recetas-btn" onClick={() => navigate('/ver-recetas')}>Ver tus recetas</button>
+      </div>
+      <div className="right-side">
+        <h1>Recetas</h1>
+        {error && <p className="error-message">{error}</p>}
+        {successMessage && <p className="success-message">{successMessage}</p>}
+        <form onSubmit={handleSubmit}>
+          <input type="text" name="nombre" placeholder="Nombre" value={nuevaReceta.nombre} onChange={handleInputChange} />
+          <input type="text" name="descripcion" placeholder="Descripción" value={nuevaReceta.descripcion} onChange={handleInputChange} />
+          <textarea name="ingredientes" placeholder="Ingredientes" value={nuevaReceta.ingredientes} onChange={handleInputChange} />
+          <textarea name="instrucciones" placeholder="Instrucciones" value={nuevaReceta.instrucciones} onChange={handleInputChange} />
+          <input type="number" name="calorias" placeholder="Calorías" value={nuevaReceta.calorias} onChange={handleInputChange} />
+          <input type="number" name="proteinas" placeholder="Proteínas" value={nuevaReceta.proteinas} onChange={handleInputChange} />
+          <input type="number" name="carbohidratos" placeholder="Carbohidratos" value={nuevaReceta.carbohidratos} onChange={handleInputChange} />
+          <button type="submit" disabled={loading} className="btn agregar-receta-btn">{loading ? 'Cargando...' : 'Agregar Receta'}</button>
+        </form>
+      </div>
     </div>
   );
 };
 
-export default Recetas;
+export default Receta;
