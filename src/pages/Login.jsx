@@ -15,7 +15,8 @@ const Login = ({ setUsuarioId }) => {
     try {
       const res = await fetchLogin(email, password);
       localStorage.setItem('token', res.data.token);
-      setUsuarioId(res.data.usuarioId); // Asumiendo que la respuesta contiene el ID del usuario
+      localStorage.setItem('usuarioId', res.data.id); // Asegúrate de que 'id' es el campo correcto en la respuesta del backend
+      setUsuarioId(res.data.id); // Asumiendo que la respuesta contiene el ID del usuario
       navigate('/home'); // Cambié a '/comidas' en lugar de '/dashboard'
     } catch (error) {
       console.log(error);

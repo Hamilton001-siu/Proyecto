@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { fetchRegister } from '../Services/api';
 import { useNavigate } from 'react-router-dom';
-
 import { FaUser, FaLock, FaEnvelope, FaVenusMars, FaWeight, FaRulerVertical, FaCalendar } from 'react-icons/fa';
+import './Register.css';
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -30,7 +30,8 @@ const Register = () => {
     try {
       const res = await fetchRegister(registerData);
       localStorage.setItem('token', res.data.token);
-      navigate('/login');
+      localStorage.setItem('usuarioId', res.data.id); // Asegúrate de que 'id' es el campo correcto en la respuesta del backend
+      navigate('/login'); // Redirecciona al login o directamente a 'home' si el usuario ya está autenticado
     } catch (error) {
       console.log(error);
       alert('Error during registration');
