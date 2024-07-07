@@ -44,7 +44,7 @@ const VerComidas = () => {
   const handleUpdate = async (id) => {
     setLoading(true);
     try {
-      const updatedComida = await partialUpdateComida(id, updatedFields);
+      const updatedComida = await partialUpdateComida(id, { ...updatedFields, usuarioId });
       setComidas(prevState => prevState.map(comida => comida.id === id ? updatedComida : comida));
       setEditingComida(null);
       setUpdatedFields({});
@@ -73,15 +73,15 @@ const VerComidas = () => {
     <div className="ver-comidas-container">
       <div className="content">
         <h1>Tus Comidas</h1>
-        {error && <p>{error}</p>}
+        {error && <p className="error-message">{error}</p>}
         {loading ? (
           <p>Cargando...</p>
         ) : (
           <ul>
             {comidas.map(comida => (
-              <li key={comida.id}>
+              <li key={comida.id} className="comida-item">
                 {editingComida && editingComida.id === comida.id ? (
-                  <div>
+                  <div className="editing-fields">
                     <input
                       type="text"
                       name="nombre"
@@ -118,14 +118,18 @@ const VerComidas = () => {
                       value={updatedFields.fecha}
                       onChange={handleFieldChange}
                     />
-                    <button onClick={() => handleUpdate(comida.id)}>Guardar</button>
-                    <button onClick={() => setEditingComida(null)}>Cancelar</button>
+                    <div className="buttons">
+                      <button className="btn save-btn" onClick={() => handleUpdate(comida.id)}>Guardar</button>
+                      <button className="btn cancel-btn" onClick={() => setEditingComida(null)}>Cancelar</button>
+                    </div>
                   </div>
                 ) : (
-                  <div>
+                  <div className="comida-details">
                     {comida.nombre} - {comida.tipo} - {comida.proteinas}g - {comida.carbohidratos}g - {comida.calorias}cal - {comida.fecha}
-                    <button onClick={() => startEditing(comida)}>Actualizar</button>
-                    <button onClick={() => handleDelete(comida.id)}>Eliminar</button>
+                    <div className="buttons">
+                      <button className="btn update-btn" onClick={() => startEditing(comida)}>Actualizar</button>
+                      <button className="btn delete-btn" onClick={() => handleDelete(comida.id)}>Eliminar</button>
+                    </div>
                   </div>
                 )}
               </li>

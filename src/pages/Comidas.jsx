@@ -15,6 +15,7 @@ const Comidas = () => {
   });
   const [usuarioId] = useState(localStorage.getItem('usuarioId'));
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -34,6 +35,10 @@ const Comidas = () => {
       await createComida({ ...nuevaComida, usuarioId });
       setNuevaComida({ nombre: '', tipo: '', proteinas: '', carbohidratos: '', calorias: '', fecha: '' });
       setError('');
+      setSuccessMessage('¡Comida creada exitosamente!');
+      setTimeout(() => {
+        setSuccessMessage('');
+      }, 3000);
     } catch (error) {
       console.error('Error creating comida:', error);
       setError('Error al crear comida. Por favor intente de nuevo.');
@@ -50,7 +55,8 @@ const Comidas = () => {
       </div>
       <div className="right-side">
         <h1>Comidas</h1>
-        {error && <p>{error}</p>}
+        {error && <p className="error-message">{error}</p>}
+        {successMessage && <p className="success-message">{successMessage}</p>}
         <form onSubmit={handleSubmit}>
           <input type="text" name="nombre" placeholder="Nombre" value={nuevaComida.nombre} onChange={handleInputChange} />
           <input type="text" name="tipo" placeholder="Tipo" value={nuevaComida.tipo} onChange={handleInputChange} />
