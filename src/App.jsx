@@ -14,6 +14,7 @@ import VerComidas from './pages/VerComidas';
 import Consejos from './pages/Consejos';
 import Recetas from './pages/Receta';
 import Recordatorios from './pages/Recordatorio';
+import VerEjercicios from './pages/VerEjercicios';
 import ResumenesSemanales from './pages/ResumenesSemanales';
 import ActividadFisica from './pages/ActividadFisica';
 
@@ -33,6 +34,7 @@ function App() {
         <Route path="/recetas" element={<Recetas usuarioId={usuarioId} />} />
         <Route path="/recordatorios" element={<Recordatorios usuarioId={usuarioId} />} />
         <Route path="/resumenes-semanales" element={<ResumenesSemanales usuarioId={usuarioId} />} />
+        <Route path="/ver-ejercicios" element={<VerEjercicios usuarioId={usuarioId} />} /> 
         <Route path="/actividades-fisicas" element={<ActividadFisica usuarioId={usuarioId} />} />
       </Routes>
     </Router>

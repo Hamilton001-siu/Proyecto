@@ -1,105 +1,65 @@
-import React, { useState, useEffect } from 'react';
-import { getActividadesFisicas, createActividadFisica, updateActividadFisica, partialUpdateActividadFisica, deleteActividadFisica } from '../Services/api';
+import React, { useState } from 'react';
+import { createActividadFisica } from '../Services/api';
+import actividadImg from '../assets/corriendddo.png'; // Asegúrate de que la ruta a la imagen sea correcta
+import { useNavigate } from 'react-router-dom';
+import './ActividadFisica.css';
 
-const ActividadFisica = ({ usuarioId }) => {
-  const [actividades, setActividades] = useState([]);
+const ActividadFisica = () => {
   const [nuevaActividad, setNuevaActividad] = useState({ tipo: '', duracion: '', caloriasQuemadas: '', fecha: '' });
-
-  useEffect(() => {
-    const fetchActividades = async () => {
-      try {
-        const data = await getActividadesFisicas(usuarioId);
-        setActividades(data);
-      } catch (error) {
-        console.error('Error fetching actividades:', error);
-      }
-    };
-
-    fetchActividades();
-  }, [usuarioId]);
+  const [usuarioId] = useState(localStorage.getItem('usuarioId'));
+  const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setNuevaActividad((prevState) => ({
+    const isNumberField = ['duracion', 'caloriasQuemadas'].includes(name);
+    setNuevaActividad(prevState => ({
       ...prevState,
-      [name]: value,
+      [name]: isNumberField ? parseFloat(value) : value
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      const createdActividad = await createActividadFisica(nuevaActividad);
-      setActividades((prevState) => [...prevState, createdActividad]);
-      setNuevaActividad({ tipo: '', duracion: 0, caloriasQuemadas: 0, fecha: '' });
+      await createActividadFisica({ ...nuevaActividad, usuarioId });
+      setNuevaActividad({ tipo: '', duracion: '', caloriasQuemadas: '', fecha: '' });
+      setError('');
+      setSuccessMessage('¡Actividad creada exitosamente!');
+      setTimeout(() => {
+        setSuccessMessage('');
+      }, 3000);
     } catch (error) {
       console.error('Error creating actividad:', error);
-    }
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      await deleteActividadFisica(id);
-      setActividades((prevState) => prevState.filter((actividad) => actividad.id !== id));
-    } catch (error) {
-      console.error('Error deleting actividad:', error);
-    }
-  };
-
-  const handleUpdate = async (id) => {
-    try {
-      const updatedActividad = await updateActividadFisica(id, nuevaActividad);
-      setActividades((prevState) => prevState.map((actividad) => (actividad.id === id ? updatedActividad : actividad)));
-      setNuevaActividad({ tipo: '', duracion: 0, caloriasQuemadas: 0, fecha: '' });
-    } catch (error) {
-      console.error('Error updating actividad:', error);
+      setError('Error al crear actividad. Por favor intente de nuevo.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div>
-      <h1>Actividades Físicas</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="tipo"
-          placeholder="Tipo"
-          value={nuevaActividad.tipo}
-          onChange={handleInputChange}
-        />
-        <input
-          type="number"
-          name="duracion"
-          placeholder="Duración (minutos)"
-          value={nuevaActividad.duracion}
-          onChange={handleInputChange}
-        />
-        <input
-          type="number"
-          name="caloriasQuemadas"
-          placeholder="Calorías Quemadas"
-          value={nuevaActividad.caloriasQuemadas}
-          onChange={handleInputChange}
-        />
-        <input
-          type="datetime-local"
-          name="fecha"
-          placeholder="Fecha"
-          value={nuevaActividad.fecha}
-          onChange={handleInputChange}
-        />
-        <button type="submit">Agregar Actividad</button>
-      </form>
-
-      <ul>
-        {actividades.map((actividad) => (
-          <li key={actividad.id}>
-            {actividad.tipo} - {actividad.duracion} mins - {actividad.caloriasQuemadas} kcal - {new Date(actividad.fecha).toLocaleString()}
-            <button onClick={() => handleDelete(actividad.id)}>Eliminar</button>
-            <button onClick={() => handleUpdate(actividad.id)}>Actualizar</button>
-          </li>
-        ))}
-      </ul>
+    <div className="container">
+      <div className="left-side">
+        <img src={actividadImg} alt="Actividad" className="actividad-img" />
+        <button className="btn ver-actividades-btn" onClick={() => navigate('/ver-ejercicios')}>Ver tus ejercicios</button>
+      </div>
+      <div className="right-side">
+        <h1>Ejercicios</h1>
+        {error && <p className="error-message">{error}</p>}
+        {successMessage && <p className="success-message">{successMessage}</p>}
+        <form onSubmit={handleSubmit}>
+          <input type="text" name="tipo" placeholder="Tipo" value={nuevaActividad.tipo} onChange={handleInputChange} />
+          <input type="number" name="duracion" placeholder="Duración (minutos)" value={nuevaActividad.duracion} onChange={handleInputChange} />
+          <input type="number" name="caloriasQuemadas" placeholder="Calorías Quemadas" value={nuevaActividad.caloriasQuemadas} onChange={handleInputChange} />
+          <input type="datetime-local" name="fecha" placeholder="Fecha" value={nuevaActividad.fecha} onChange={handleInputChange} />
+          <button type="submit" disabled={loading} className="btn agregar-actividad-btn">
+            {loading ? 'Cargando...' : 'Agregar Actividad'}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

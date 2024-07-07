@@ -235,9 +235,16 @@ export const generateResumenSemanal = async (usuarioId) => {
 };
 
 // Actividades Físicas
+
 export const getActividadesFisicas = async (usuarioId) => {
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+    }
+  };
+
   try {
-    const response = await axios.get(`${API_URL}/actividades-fisicas/usuario/${usuarioId}`);
+    const response = await axios.get(`${API_URL}/actividades-fisicas/usuario/${usuarioId}`, config);
     return response.data;
   } catch (error) {
     console.error('Error fetching actividades físicas:', error);
@@ -246,8 +253,15 @@ export const getActividadesFisicas = async (usuarioId) => {
 };
 
 export const createActividadFisica = async (actividadFisica) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+    }
+  };
+
   try {
-    const response = await axios.post(`${API_URL}/actividades-fisicas`, actividadFisica);
+    const response = await axios.post(`${API_URL}/actividades-fisicas`, actividadFisica, config);
     return response.data;
   } catch (error) {
     console.error('Error creating actividad física:', error);
@@ -255,19 +269,15 @@ export const createActividadFisica = async (actividadFisica) => {
   }
 };
 
-export const updateActividadFisica = async (id, actividadFisica) => {
-  try {
-    const response = await axios.put(`${API_URL}/actividades-fisicas/${id}`, actividadFisica);
-    return response.data;
-  } catch (error) {
-    console.error('Error updating actividad física:', error);
-    throw error;
-  }
-};
-
 export const partialUpdateActividadFisica = async (id, actividadFisica) => {
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+    }
+  };
+
   try {
-    const response = await axios.patch(`${API_URL}/actividades-fisicas/${id}`, actividadFisica);
+    const response = await axios.patch(`${API_URL}/actividades-fisicas/${id}`, actividadFisica, config);
     return response.data;
   } catch (error) {
     console.error('Error partially updating actividad física:', error);
@@ -276,8 +286,14 @@ export const partialUpdateActividadFisica = async (id, actividadFisica) => {
 };
 
 export const deleteActividadFisica = async (id) => {
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+    }
+  };
+
   try {
-    await axios.delete(`${API_URL}/actividades-fisicas/${id}`);
+    await axios.delete(`${API_URL}/actividades-fisicas/${id}`, config);
   } catch (error) {
     console.error('Error deleting actividad física:', error);
     throw error;
