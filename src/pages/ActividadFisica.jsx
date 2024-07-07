@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getActividadesFisicas, createActividadFisica, updateActividadFisica, partialUpdateActividadFisica, deleteActividadFisica } from './Services/api';
+import { getActividadesFisicas, createActividadFisica, updateActividadFisica, partialUpdateActividadFisica, deleteActividadFisica } from '../Services/api';
 
 const ActividadFisica = ({ usuarioId }) => {
   const [actividades, setActividades] = useState([]);

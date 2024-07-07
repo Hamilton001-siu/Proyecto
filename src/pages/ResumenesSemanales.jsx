@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getAllResúmenesSemanalesByUsuario, generateResumenSemanal } from './Services/api';
+import { getAllResúmenesSemanalesByUsuario, generateResumenSemanal } from '../Services/api';
 
 const ResumenesSemanales = ({ usuarioId }) => {
   const [resumenes, setResumenes] = useState([]);

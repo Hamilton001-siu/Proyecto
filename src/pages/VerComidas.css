@@ -1,0 +1,32 @@
+.ver-comidas-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.content {
+  background: rgba(255, 255, 255, 0.9); /* Fondo blanco con opacidad */
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 600px;
+}
+
+.ver-comidas-container ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.ver-comidas-container li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.ver-comidas-container button {
+  margin-left: 10px;
+}

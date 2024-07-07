@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getRecordatorios, createRecordatorio, updateRecordatorio, partialUpdateRecordatorio, deleteRecordatorio } from './Services/api';
+import { getRecordatorios, createRecordatorio, updateRecordatorio, partialUpdateRecordatorio, deleteRecordatorio } from '../Services/api';
 
 const Recordatorios = ({ usuarioId }) => {
   const [recordatorios, setRecordatorios] = useState([]);

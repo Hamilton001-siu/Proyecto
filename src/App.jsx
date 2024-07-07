@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import './App.css';
-
 import {
   BrowserRouter as Router,
   Routes,
@@ -10,16 +9,16 @@ import {
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Comidas from './Comidas';
-import Consejos from './Consejos';
-import Recetas from './Receta';
-import Recordatorios from './Recordatorio';
-import ResumenesSemanales from './ResumenesSemanales';
-import ActividadFisica from './ActividadFisica';
-
+import Comidas from './pages/Comidas';
+import VerComidas from './pages/VerComidas';
+import Consejos from './pages/Consejos';
+import Recetas from './pages/Receta';
+import Recordatorios from './pages/Recordatorio';
+import ResumenesSemanales from './pages/ResumenesSemanales';
+import ActividadFisica from './pages/ActividadFisica';
 
 function App() {
-  const [usuarioId, setUsuarioId] = useState(null);
+  const [usuarioId, setUsuarioId] = useState(localStorage.getItem('usuarioId'));
 
   return (
     <Router>
@@ -28,7 +27,8 @@ function App() {
         <Route path='/home' element={<Home />}/>
         <Route path="/login" element={<Login setUsuarioId={setUsuarioId} />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/comidas" element={<Comidas usuarioId={usuarioId} />} />
+        <Route path="/comidas" element={<Comidas />} />
+        <Route path="/ver-comidas" element={<VerComidas usuarioId={usuarioId} />} />
         <Route path="/consejos" element={<Consejos />} />
         <Route path="/recetas" element={<Recetas usuarioId={usuarioId} />} />
         <Route path="/recordatorios" element={<Recordatorios usuarioId={usuarioId} />} />

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getRecetas, createReceta, updateReceta, partialUpdateReceta, deleteReceta } from './Services/api';
+import { getRecetas, createReceta, updateReceta, partialUpdateReceta, deleteReceta } from '../Services/api';
 
 const Recetas = ({ usuarioId }) => {
   const [recetas, setRecetas] = useState([]);

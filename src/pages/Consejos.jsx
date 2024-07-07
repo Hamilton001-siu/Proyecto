@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getRandomConsejo, getAllConsejos } from './Services/api';
+import { getRandomConsejo, getAllConsejos } from '../Services/api';
 
 const Consejos = () => {
   const [consejos, setConsejos] = useState([]);

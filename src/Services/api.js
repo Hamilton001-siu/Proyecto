@@ -18,14 +18,21 @@ export const fetchRegister = async (data) => {
 
 // Comidas
 export const getComidas = async (usuarioId) => {
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+    }
+  };
+
   try {
-    const response = await axios.get(`${API_URL}/comidas/usuario/${usuarioId}`);
+    const response = await axios.get(`${API_URL}/comidas/usuario/${usuarioId}`, config);
     return response.data;
   } catch (error) {
     console.error('Error fetching comidas:', error);
     throw error;
   }
 };
+
 
 export const createComida = async (comida) => {
   const config = {
@@ -44,19 +51,15 @@ export const createComida = async (comida) => {
   }
 };
 
-export const updateComida = async (id, comida) => {
-  try {
-    const response = await axios.put(`${API_URL}/comidas/${id}`, comida);
-    return response.data;
-  } catch (error) {
-    console.error('Error updating comida:', error);
-    throw error;
-  }
-};
-
 export const partialUpdateComida = async (id, comida) => {
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+    }
+  };
+
   try {
-    const response = await axios.patch(`${API_URL}/comidas/${id}`, comida);
+    const response = await axios.patch(`${API_URL}/comidas/${id}`, comida, config);
     return response.data;
   } catch (error) {
     console.error('Error partially updating comida:', error);
@@ -65,8 +68,14 @@ export const partialUpdateComida = async (id, comida) => {
 };
 
 export const deleteComida = async (id) => {
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+    }
+  };
+
   try {
-    await axios.delete(`${API_URL}/comidas/${id}`);
+    await axios.delete(`${API_URL}/comidas/${id}`, config);
   } catch (error) {
     console.error('Error deleting comida:', error);
     throw error;
