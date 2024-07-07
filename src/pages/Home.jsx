@@ -1,19 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import logo from '../assets/nutri1.png';
 import './Home.css';
 
 const Home = () => {
   return (
     <div className="home-container">
-      <div className="home-header">
-        <h1>Bienvenidos a NutriFit</h1>
-        <p>Somos un pequeño grupo que busca un gran cambio en los programadores</p>
-      </div>
       <div className="home-content">
         <div className="home-image">
-          {/* Aquí puedes agregar una imagen si lo deseas */}
+          <img src={logo} alt="NutriFit Logo" />
         </div>
         <div className="home-menu">
+          <h1>Bienvenidos a NutriFit</h1>
+          <p>Somos un pequeño grupo que busca un gran cambio en los programadores</p>
           <Link to="/comidas" className="home-button">Agregar Comida</Link>
           <Link to="/actividades-fisicas" className="home-button">Ejercicios Realizados</Link>
           <Link to="/resumenes-semanales" className="home-button">Ver Resumen Semanal</Link>
