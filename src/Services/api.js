@@ -24,6 +24,8 @@ export const getComidas = async (usuarioId) => {
     }
   };
 
+  
+
   try {
     const response = await axios.get(`${API_URL}/comidas/usuario/${usuarioId}`, config);
     return response.data;
