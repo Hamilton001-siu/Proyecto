@@ -9,16 +9,19 @@
 
 .content {
   background: rgba(255, 255, 255, 0.9);
-  padding: 20px;
+  padding: 30px;
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 80%;
-  max-width: 800px;
+  max-width: 600px;
+  text-align: center;
 }
 
 h1 {
   text-align: center;
   color: #333;
+  font-size: 2rem;
+  margin-bottom: 20px;
 }
 
 .error-message {
@@ -30,6 +33,9 @@ h1 {
 ul {
   list-style-type: none;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .comida-item {
@@ -38,21 +44,25 @@ ul {
   padding: 15px;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
 }
 
 .comida-details {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 10px;
   align-items: center;
 }
 
 .editing-fields {
   display: flex;
   flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
 }
 
 .editing-fields input {
-  margin: 5px 0;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -60,6 +70,7 @@ ul {
 
 .buttons {
   display: flex;
+  justify-content: center;
   gap: 10px;
   margin-top: 10px;
 }
@@ -69,28 +80,29 @@ ul {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .update-btn {
-  background-color: #007bff;
+  background-color: #6f42c1;
   color: white;
 }
 
 .update-btn:hover {
-  background-color: #0056b3;
+  background-color: #5a31a3;
 }
 
 .delete-btn {
-  background-color: #dc3545;
+  background-color: #e3342f;
   color: white;
 }
 
 .delete-btn:hover {
-  background-color: #c82333;
+  background-color: #c62828;
 }
 
 .save-btn {
-  background-color: #28a745;
+  background-color: #38c172;
   color: white;
 }
 
