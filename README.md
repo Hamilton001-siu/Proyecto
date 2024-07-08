@@ -84,6 +84,13 @@ Los endpoints de la API REST son los siguientes:
 | **PATCH** | Actualizar parcialmente Actividad Física: /actividades-fisicas/{id} |
 | **DELETE** | Eliminar Actividad Física: /actividades-fisicas/{id} |
 
+## Variables de entorno
+- PG_HOST=database-2.c67h2wwit96k.us-east-1.rds.amazonaws.com
+- PG_PASSWORD=minejos2005
+- PG_PORT=5432
+- PG_USERNAME=postgres
+- POSTGRES_DB=postgres
+
 ## Inicializar tu proyecto Vite
 
 Para inicializar el proyecto puedes usar los pasos de la documentación de Vite [**aquí**](https://vitejs.dev/guide/).
@@ -93,3 +100,5 @@ Para inicializar el proyecto puedes usar los pasos de la documentación de Vite 
 - [**Axios**](https://axios-http.com/docs/intro)
 - [**React**](https://react.dev/reference/react)
 - [**React Router**](https://reactrouter.com/web/guides/quick-start)
+
+
