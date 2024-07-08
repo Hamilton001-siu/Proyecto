@@ -12,7 +12,7 @@ const Home = () => {
         </div>
         <div className="home-menu">
           <h1>Bienvenidos a NutriFit</h1>
-          <p>Somos un pequeño grupo que busca un gran cambio en los programadores</p>
+          <p className="intro-text">Somos un pequeño grupo que busca un gran cambio en los programadores</p>
           <Link to="/comidas" className="home-button">Agregar Comida</Link>
           <Link to="/actividades-fisicas" className="home-button">Ejercicios Realizados</Link>
           <Link to="/recetas" className="home-button">Tus Recetas</Link>

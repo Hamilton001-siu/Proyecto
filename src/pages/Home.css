@@ -25,6 +25,10 @@
   color: #bf9000;
 }
 
+.intro-text {
+  color: #000000; /* Cambiado a color negro */
+}
+
 .home-content {
   display: flex;
   justify-content: center;
