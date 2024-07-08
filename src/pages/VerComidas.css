@@ -19,7 +19,7 @@
 
 h1 {
   text-align: center;
-  color: #333;
+  color: #000; /* Cambiado a negro */
   font-size: 2rem;
   margin-bottom: 20px;
 }
@@ -46,6 +46,7 @@ ul {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 500px;
+  color: #000; /* Cambiado a negro */
 }
 
 .comida-details {
@@ -53,6 +54,7 @@ ul {
   flex-direction: column;
   gap: 10px;
   align-items: center;
+  color: #000; /* Cambiado a negro */
 }
 
 .editing-fields {
@@ -60,12 +62,14 @@ ul {
   flex-direction: column;
   gap: 10px;
   margin-top: 10px;
+  color: #000; /* Cambiado a negro */
 }
 
 .editing-fields input {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  color: #000; /* Cambiado a negro */
 }
 
 .buttons {
