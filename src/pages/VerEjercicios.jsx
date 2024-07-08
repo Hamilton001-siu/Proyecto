@@ -82,8 +82,8 @@ const VerEjercicios = ({ usuarioId }) => {
                 <div className="exercise-details">
                   {actividad.tipo} - {actividad.duracion} mins - {actividad.caloriasQuemadas} kcal - {new Date(actividad.fecha).toLocaleString()}
                   <div>
-                    <button onClick={() => startEditing(actividad)}>Actualizar</button>
-                    <button onClick={() => handleDelete(actividad.id)}>Eliminar</button>
+                    <button className="btn-actualizar" onClick={() => startEditing(actividad)}>Actualizar</button>
+                    <button className="btn-eliminar" onClick={() => handleDelete(actividad.id)}>Eliminar</button>
                   </div>
                 </div>
                 {editingActividad && editingActividad.id === actividad.id && (
@@ -113,7 +113,7 @@ const VerEjercicios = ({ usuarioId }) => {
                       onChange={handleFieldChange}
                     />
                     <button onClick={() => handleUpdate(actividad.id)}>Guardar</button>
-                    <button onClick={() => setEditingActividad(null)}>Cancelar</button>
+                    <button className="btn-cancelar" onClick={() => setEditingActividad(null)}>Cancelar</button>
                   </div>
                 )}
               </li>
