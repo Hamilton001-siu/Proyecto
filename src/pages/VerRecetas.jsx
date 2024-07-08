@@ -1,47 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import { getRecetas, partialUpdateReceta, deleteReceta } from '../Services/api';
+import { getRecetas, createReceta, partialUpdateReceta, deleteReceta } from '../Services/api';
 import './VerRecetas.css';
 
 const VerRecetas = ({ usuarioId }) => {
   const [recetas, setRecetas] = useState([]);
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
   const [editingReceta, setEditingReceta] = useState(null);
   const [updatedFields, setUpdatedFields] = useState({});
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchRecetas = async () => {
-      setLoading(true);
       try {
         const data = await getRecetas(usuarioId);
         setRecetas(data);
       } catch (error) {
         console.error('Error fetching recetas:', error);
-        setError('Error al cargar las recetas. Por favor intente de nuevo.');
-      } finally {
-        setLoading(false);
       }
     };
 
-    if (usuarioId) {
-      fetchRecetas();
-    } else {
-      setError('No hay usuario ID disponible');
-    }
+    fetchRecetas();
   }, [usuarioId]);
 
-  const handleDelete = async (id) => {
-    try {
-      await deleteReceta(id);
-      setRecetas(prevState => prevState.filter(receta => receta.id !== id));
-    } catch (error) {
-      console.error('Error deleting receta:', error);
-      setError('Error al eliminar receta. Por favor intente de nuevo.');
-    }
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUpdatedFields(prevState => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
   const handleUpdate = async (id) => {
-    setLoading(true);
     try {
       const updatedReceta = await partialUpdateReceta(id, { ...updatedFields, usuarioId });
       setRecetas(prevState => prevState.map(receta => receta.id === id ? updatedReceta : receta));
@@ -50,22 +38,24 @@ const VerRecetas = ({ usuarioId }) => {
     } catch (error) {
       console.error('Error updating receta:', error);
       setError('Error al actualizar receta. Por favor intente de nuevo.');
-    } finally {
-      setLoading(false);
     }
   };
 
-  const startEditing = (receta) => {
-    setEditingReceta(receta);
-    setUpdatedFields(receta);
+  const handleDelete = async (id) => {
+    try {
+      await deleteReceta(id);
+      setRecetas(prevState => prevState.filter(receta => receta.id !== id));
+    } catch (error) {
+      console.error('Error deleting receta:', error);
+    }
   };
 
-  const handleFieldChange = (e) => {
-    const { name, value } = e.target;
-    setUpdatedFields({
-      ...updatedFields,
-      [name]: value,
-    });
+  const toggleEditing = (id) => {
+    if (editingReceta === id) {
+      setEditingReceta(null);
+    } else {
+      setEditingReceta(id);
+    }
   };
 
   return (
@@ -73,71 +63,77 @@ const VerRecetas = ({ usuarioId }) => {
       <div className="content">
         <h1>Tus Recetas</h1>
         {error && <p className="error-message">{error}</p>}
-        {loading ? (
-          <p>Cargando...</p>
-        ) : (
-          <ul>
-            {recetas.map(receta => (
-              <li key={receta.id} className={editingReceta && editingReceta.id === receta.id ? 'editing' : ''}>
-                <div className="receta-details">
-                  <h3>{receta.nombre}</h3>
-                  <p>{receta.descripcion}</p>
-                  <p>Ingredientes: {receta.ingredientes}</p>
-                  <p>Instrucciones: {receta.instrucciones}</p>
-                  <p>Calorías: {receta.calorias}</p>
-                  <p>Proteínas: {receta.proteinas}</p>
-                  <p>Carbohidratos: {receta.carbohidratos}</p>
-                  <button onClick={() => startEditing(receta)}>Actualizar</button>
-                  <button onClick={() => handleDelete(receta.id)}>Eliminar</button>
-                </div>
-                <div className="update-form">
+        <ul>
+          {recetas.map((receta) => (
+            <li key={receta.id} className={editingReceta === receta.id ? 'editing' : ''}>
+              <div className="receta-details">
+                <h3>{receta.nombre}</h3>
+                <p>{receta.descripcion}</p>
+                <p>Ingredientes: {receta.ingredientes}</p>
+                <p>Instrucciones: {receta.instrucciones}</p>
+                <p>Calorías: {receta.calorias}</p>
+                <p>Proteínas: {receta.proteinas}</p>
+                <p>Carbohidratos: {receta.carbohidratos}</p>
+              </div>
+              <div className="actions">
+                <button className="update-btn" onClick={() => toggleEditing(receta.id)}>Actualizar</button>
+                <button className="delete-btn" onClick={() => handleDelete(receta.id)}>Eliminar</button>
+              </div>
+              {editingReceta === receta.id && (
+                <form className="update-form" onSubmit={(e) => { e.preventDefault(); handleUpdate(receta.id); }}>
                   <input
                     type="text"
                     name="nombre"
-                    value={updatedFields.nombre}
-                    onChange={handleFieldChange}
+                    placeholder="Nombre"
+                    value={updatedFields.nombre || receta.nombre}
+                    onChange={handleInputChange}
                   />
                   <input
                     type="text"
                     name="descripcion"
-                    value={updatedFields.descripcion}
-                    onChange={handleFieldChange}
+                    placeholder="Descripción"
+                    value={updatedFields.descripcion || receta.descripcion}
+                    onChange={handleInputChange}
                   />
                   <textarea
                     name="ingredientes"
-                    value={updatedFields.ingredientes}
-                    onChange={handleFieldChange}
+                    placeholder="Ingredientes"
+                    value={updatedFields.ingredientes || receta.ingredientes}
+                    onChange={handleInputChange}
                   />
                   <textarea
                     name="instrucciones"
-                    value={updatedFields.instrucciones}
-                    onChange={handleFieldChange}
+                    placeholder="Instrucciones"
+                    value={updatedFields.instrucciones || receta.instrucciones}
+                    onChange={handleInputChange}
                   />
                   <input
                     type="number"
                     name="calorias"
-                    value={updatedFields.calorias}
-                    onChange={handleFieldChange}
+                    placeholder="Calorías"
+                    value={updatedFields.calorias || receta.calorias}
+                    onChange={handleInputChange}
                   />
                   <input
                     type="number"
                     name="proteinas"
-                    value={updatedFields.proteinas}
-                    onChange={handleFieldChange}
+                    placeholder="Proteínas"
+                    value={updatedFields.proteinas || receta.proteinas}
+                    onChange={handleInputChange}
                   />
                   <input
                     type="number"
                     name="carbohidratos"
-                    value={updatedFields.carbohidratos}
-                    onChange={handleFieldChange}
+                    placeholder="Carbohidratos"
+                    value={updatedFields.carbohidratos || receta.carbohidratos}
+                    onChange={handleInputChange}
                   />
-                  <button onClick={() => handleUpdate(receta.id)}>Guardar</button>
-                  <button onClick={() => setEditingReceta(null)}>Cancelar</button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
+                  <button type="submit" className="btn save-btn">Guardar</button>
+                </form>
+              )}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
